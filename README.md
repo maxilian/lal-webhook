@@ -19,11 +19,11 @@ go run ./cmd/main.go
 lalu ubah setting pada lalserver untuk mengaktifkan http notify/webhook ketika ada event video start stop
 ```
 "http_notify": {
-      "enable": true,
-      "update_interval_sec": 5,
-      "on_sub_start": "http://127.0.0.1:5000/on_sub_start",
-      "on_sub_stop": "http://127.0.0.1:5000/on_sub_stop"
-    },
+    "enable": true,
+    "update_interval_sec": 5,
+    "on_sub_start": "http://127.0.0.1:5000/on_sub_start",
+    "on_sub_stop": "http://127.0.0.1:5000/on_sub_stop"
+},
 ```   
 
 
@@ -32,7 +32,10 @@ lalu ubah setting pada lalserver untuk mengaktifkan http notify/webhook ketika a
 go run ./simulation/main.go
 ```
 
-3) Untuk melihat list dari quota gunakan akses halaman http://localhost:5000/quotas
+3) Endpoint yang ada pada demo ini:
+- Untuk melihat list dari quota gunakan akses halaman http://localhost:5000/quotas
+- Untuk event ketika stream di mulai menggunakan `/on_sub_start`
+- Untuk event ketika stream di berakhir menggunakan `/on_sub_stop`
 
 4) Untuk manual kick menggunakan curl:
 ```
