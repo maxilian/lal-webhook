@@ -5,6 +5,7 @@ Repo ini bertujuan sebagai demo dari implementasi webhook di lalserver.
 Dilengkapi dengan simple token based quota management.
 
 ### Requirements
+
 1) lalserver
 2) redis server
 3) ffmpeg
@@ -12,11 +13,13 @@ Dilengkapi dengan simple token based quota management.
 ### Usage
 
 1) Untuk running webhook gunakan command:
+
 ```
 go run ./cmd/main.go
 ```
 
 lalu ubah setting pada lalserver untuk mengaktifkan http notify/webhook ketika ada event video start stop
+
 ```
 "http_notify": {
     "enable": true,
@@ -28,16 +31,22 @@ lalu ubah setting pada lalserver untuk mengaktifkan http notify/webhook ketika a
 
 
 2) Untuk menjalankan simulasi streaming secara headless gunakan command:
+
 ```
 go run ./simulation/main.go
 ```
 
 3) Endpoint yang ada pada demo ini:
+
 - Untuk melihat list dari quota gunakan akses halaman http://localhost:5000/quotas
+
 - Untuk event ketika stream di mulai menggunakan `/on_sub_start`
+
 - Untuk event ketika stream di berakhir menggunakan `/on_sub_stop`
 
+
 4) Untuk manual kick menggunakan curl:
+
 ```
 curl -X POST http://127.0.0.1:8083/api/ctrl/kick_session \
 -H "Content-Type: application/json" \
@@ -45,12 +54,15 @@ curl -X POST http://127.0.0.1:8083/api/ctrl/kick_session \
 ```
 
 5) Cara push rtmp streaming
+
 ```
 ffmpeg -re -fflags +genpts -stream_loop -1 -i .\video.mp4 -t 600 -c:v libx264 -preset superfast -tune zerolatency -c:a aac -f flv rtmp://localhost:1935/<nama-app>/<nama-stream>.flv
 ```
 
 6) Cara akses stream menggunakan WS client
+
 ```
 ws://localhost:8080/<nama-app>/<nama-stream>.flv?token=random-token-disini
 ```
+
 Random token digunakan sebagai identifikasi perhitungan quota sederhana menggunakan redis, jika token tidak diisi maka stream akan otomatis diputus lewat webhook `on_sub_start`
