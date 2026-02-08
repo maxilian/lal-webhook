@@ -2,7 +2,7 @@
 
 Repo ini bertujuan sebagai demo dari implementasi webhook di lalserver. 
 
-Dilengkapi dengan simple token based quota management.
+Dilengkapi dengan simple token based quota management dan simulasi concurrent streaming dengan `ws-flv`.
 
 ### Requirements
 
