@@ -7,6 +7,7 @@ Dilengkapi dengan simple token based quota management.
 ### Requirements
 1) lalserver
 2) redis server
+3) ffmpeg
 
 ### Usage
 
@@ -40,4 +41,13 @@ curl -X POST http://127.0.0.1:8083/api/ctrl/kick_session \
 -d '{"stream_name":"testing", "session_id":"ID dari stream"}'
 ```
 
+5) Cara push rtmp streaming
+```
+ffmpeg -re -fflags +genpts -stream_loop -1 -i .\video.mp4 -t 600 -c:v libx264 -preset superfast -tune zerolatency -c:a aac -f flv rtmp://localhost:1935/<nama-app>/<nama-stream>.flv
+```
+
+6) Cara akses stream menggunakan WS client
+```
+ws://localhost:8080/<nama-app>/<nama-stream>.flv?token=random-token-disini
+```
 
