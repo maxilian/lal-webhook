@@ -50,4 +50,4 @@ ffmpeg -re -fflags +genpts -stream_loop -1 -i .\video.mp4 -t 600 -c:v libx264 -p
 ```
 ws://localhost:8080/<nama-app>/<nama-stream>.flv?token=random-token-disini
 ```
-
+Random token digunakan sebagai identifikasi perhitungan quota sederhana menggunakan redis, jika token tidak diisi maka stream akan otomatis diputus lewat webhook `on_sub_start`
