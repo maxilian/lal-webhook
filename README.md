@@ -59,6 +59,12 @@ curl -X POST http://127.0.0.1:8083/api/ctrl/kick_session \
 ffmpeg -re -fflags +genpts -stream_loop -1 -i .\video.mp4 -t 600 -c:v libx264 -preset superfast -tune zerolatency -c:a aac -f flv rtmp://localhost:1935/<nama-app>/<nama-stream>.flv
 ```
 
+atau jika ingin ditambahi dengan timestamp overlay
+
+```
+ffmpeg -re -fflags +genpts -stream_loop -1 -i .\video.mp4 -vf "drawtext=text='%{localtime\:%H\\\:%M\\\:%S}':x=10:y=10:fontsize=32:fontcolor=white:box=1:boxcolor=black@0.5" -t 600 -c:v libx264 -preset superfast -tune zerolatency -c:a aac -f flv rtmp://localhost:1936/percobaan/testing-latency
+```
+
 6) Cara akses stream menggunakan WS client
 
 ```
@@ -66,3 +72,19 @@ ws://localhost:8080/<nama-app>/<nama-stream>.flv?token=random-token-disini
 ```
 
 Random token digunakan sebagai identifikasi perhitungan quota sederhana menggunakan redis, jika token tidak diisi maka stream akan otomatis diputus lewat webhook `on_sub_start`
+
+7) Gunakan command berikut untuk mereset quota yang tercatat pada redis
+
+```
+redis-cli --scan --pattern "remain:*:*" | xargs redis-cli UNLINK
+```
+
+---
+
+8) RTMP Pull Relay untuk melakukan pulling dan restream video
+
+```
+curl -X POST http://127.0.0.1:8083/api/ctrl/start_relay_pull -H "Content-Type: application/json" -d '{"stream_name":"coba-latency", "app_name":"siaran", "url": "rtmp://localhost:1936/percobaan/testing-latency", "rtsp_mode": 0}'
+```
+
+Stream name `testing-latency` dengan app name `percobaan` akan di rewrite menjadi `http://localhost:8080/siaran/coba-latency`
